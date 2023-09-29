@@ -18,7 +18,6 @@
     .widget p {
       font-style: italic;
     }
-
   </style>
 </head>
 
@@ -46,6 +45,68 @@
 
     // 👉 CHALLENGE 1 - Integers
     class Integers {
+      constructor(...ints) {
+        this.ints = ints //=value
+      }
+      //pro = this.ints
+      getAll() {
+        return this.ints
+      }
+      getEvens() {
+        let evens = []
+        for (let index = 0; index < this.ints.length; index++) {
+          if (this.ints[index] % 2 === 0) {
+            evens.push(this.ints[index])
+          }
+        }
+        return evens
+      }
+      getNegatives() {
+        let negs = []
+        for (let index = 0; index < this.ints.length; index++) {
+          if (this.ints[index] < 0) {
+            negs.push(this.ints[index])
+          }
+        }
+        return negs
+      }
+      // use [index] to pull object 
+      getAllSquared() {
+        let squared = []
+        for (let index = 0; index < this.ints.length; index++) {
+          let sq = Math.pow(this.ints[index], 2)
+          squared.push(sq)
+        }
+        return squared
+      }
+      pop() {
+        //let remove = []
+        //for (let index = 0; index < this.ints.length; index++) {
+        //   this.ints.pop(this.ints[index])
+        // }
+        return this.ints.pop()
+      }
+      push(it) {
+        //let add = []
+        //for (let index = 0; index < this.ints.length; index++) {
+        //add.pop(this.ints[index])
+        this.ints.push(it)
+
+        return this.ints
+      }
+
+      getEveryNth(n) {
+        let nth = []
+        for (let index = 0; index < this.ints.length; index += n) {
+          nth.push(this.ints[index])
+        }
+        return nth
+      }
+      getAllReversed() {
+
+        return this.ints.reverse()
+      }
+      // in geteverynth not i++ do i+n
       // 🧠 Constructor takes **any** number of arguments, which are integers
       // 🧠 Instances have an `ints` property which is an array holding the integers above in the same order
       // 🧠 Implement a `getAll` method which returns the data held in the `ints` property
@@ -63,6 +124,41 @@
 
     // 👉 CHALLENGE 2 NerfGun
     class NerfGun {
+      constructor(nerf) {
+        this.current_capacity = nerf
+        this.safety = true
+        this.max_capacity = nerf
+      }
+      shoot() {
+        if (this.current_capacity > 0 && !this.safety) {
+          this.current_capacity--
+          return "Bang!"
+        } else return "Click!"
+      }
+      reload(number) {
+        if (typeof number !== "number" || number <= 0) {
+          return "Error reloading!"
+        }
+        if (number + this.current_capacity > this.max_capacity) {
+          this.current_capacity = this.max_capacity
+        } else {
+          this.current_capacity += number
+        }
+        //-max from current // if number is greater than difference then current is equal to max // else add number to currentssSSsssS
+        //this.current_capacity += number
+        return `${this.current_capacity} projectiles left!`
+      }
+      toggleSafety() {
+        this.safety = !this.safety
+        if (this.safety) {
+          return "Safety enabled!"
+        } else return "Safety disabled!"
+
+      }
+
+
+
+      //   let message = age >= 18 ? “You are an adult”: “You are not an adult”;
       // 🧠 Constructor takes one argument: the total number of projectiles supported by the instance
       // 🧠 New instances initialize fully loaded and with the safety on
       // 🧠 Instances have a `shoot` method that takes no arguments:
@@ -81,6 +177,29 @@
 
     // 👉 CHALLENGE 3 EBook
     class EBook {
+      constructor(strings, characters) {
+        this.string = strings
+        this.character = characters
+        this.page = 0
+      }
+      next() {
+          let start =  this.page * this.character
+        let stop = start + this.character
+         let ss= this.string.slice(start,stop)
+        if (ss) {
+        this.page++
+        return ss 
+        } else {
+          return null 
+        }
+        
+
+
+      }
+      //slice string look up on mdn // stating place mulypily page page by characters //stoping place take starting place and add characters // if not returning null + 1 to page then return slice 
+
+
+
       // 🧠 Constructor takes two arguments:
       //      * First arg is a string with the whole text of the book
       //      * Second arg is the number of characters contained in a single page of the book
@@ -100,6 +219,40 @@
 
     // 👉 CHALLENGE 4 AntFarm
     class AntFarm {
+      constructor(...ants) {
+        this.ants = ants.map(name => ({ name, health: 100 })) // shorter then looping over ants 
+        console.log(this.ants)
+      }
+
+
+      work() {
+        if (this.ants.length === 0) {
+          return "No ants here. Did you work them to death?"
+        }
+        let initialantcount = this.ants.length
+        for (let index = 0; index < this.ants.length; index++) {
+          //console.log(this.ants[index].health)
+          this.ants[index].health -= 20
+
+          if (this.ants[index].health <= 0) {
+            this.ants = this.ants.slice(0, index).concat(this.ants.slice(index + 1))
+
+            index--
+          }
+          //console.log(this.ants)
+        }
+        return `${initialantcount} ants starting work!`
+      }
+      feed(name) {
+        const ant = this.ants.filter(ant=> ant.name === name ) 
+        //onsole.log('ant', ant )
+        if (ant.length === 0) {
+          return `${name} not found!`
+        }
+        ant.forEach(ant => ant.health+=15);
+         return "Yum!"
+
+      }
       // 🧠 Constructor takes **any** number of arguments, which are strings: the names of your ants
       // 🧠 Instances of AntFarm have an `ants` property holding an array of ants:
       //      * Each ant is an object with a `name` prop and a `health` prop that starts at 100
@@ -116,7 +269,18 @@
       // 🌟 Example:
       //      const farm = new AntFarm('Jess', 'Blake');
       //      farm.ants;         // evaluates to [{name: 'Jess', health: 100}, {name: 'Blake', health: 100}]
-      //      farm.work();       // returns "2 ants starting work!"
+      //
+
+
+
+
+
+
+
+
+
+
+      // returns "2 ants starting work!"
       //      farm.ants;         // evaluates to [{name: 'Jess', health: 80}, {name: 'Blake', health: 80}]
       //      farm.feed('Jess'); // returns "Yum!"
       //      farm.ants;         // evaluates to [{name: 'Jess', health: 95}, {name: 'Blake', health: 80}]
